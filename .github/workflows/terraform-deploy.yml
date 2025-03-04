@@ -1,4 +1,4 @@
-name: Create SP, Deploy Terraform, and Cleanup
+name: Deploy API Manager service and test the api
 
 on:
   push:
