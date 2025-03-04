@@ -4,29 +4,25 @@ provider "azurerm" {
 
 provider "azuread" {}
 
-# Create a unique suffix
 resource "random_integer" "apim_suffix" {
   min = 1000
   max = 9999
 }
 
-# Resource Group
 resource "azurerm_resource_group" "rg" {
   name     = "rg-apim-oidc"
   location = var.location
 }
 
-# Create an API Management instance (Developer SKU)
 resource "azurerm_api_management" "apim" {
   name                = "apimoidc${random_integer.apim_suffix.result}"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  publisher_name      = "Akash"
-  publisher_email     = "akashdpakash@gmail.com"
+  publisher_name      = "Your Publisher"
+  publisher_email     = "publisher@example.com"
   sku_name            = "Developer_1"
 }
 
-# Configure an OpenID Connect provider in APIM
 resource "azurerm_api_management_openid_connect_provider" "oidc" {
   name                = "oidcprovider"
   api_management_name = azurerm_api_management.apim.name
@@ -37,7 +33,6 @@ resource "azurerm_api_management_openid_connect_provider" "oidc" {
   metadata_endpoint   = var.oidc_metadata_endpoint
 }
 
-# Publish a dummy API in APIM that returns "Hello, World!"
 resource "azurerm_api_management_api" "hello_api" {
   name                = "helloapi"
   resource_group_name = azurerm_resource_group.rg.name
@@ -52,7 +47,6 @@ resource "azurerm_api_management_api" "hello_api" {
     content_value  = var.dummy_swagger_url
   }
 
-  # API Policy to validate JWT using OIDC and return a static response.
   policy = <<XML
 <policies>
   <inbound>
@@ -78,33 +72,4 @@ resource "azurerm_api_management_api" "hello_api" {
   </on-error>
 </policies>
 XML
-}
-
-# (Optional) Create a service principal in Azure AD via Terraform
-resource "azuread_application" "apim_app" {
-  display_name = "apim-terraform-app"
-}
-
-resource "azuread_service_principal" "apim_sp" {
-  application_id = azuread_application.apim_app.application_id
-}
-
-resource "random_password" "apim_sp_password" {
-  length  = 32
-  special = true
-}
-
-resource "azuread_service_principal_password" "apim_sp_password" {
-  service_principal_id = azuread_service_principal.apim_sp.id
-  value                = random_password.apim_sp_password.result
-  end_date             = "2099-12-31T23:59:59Z"
-}
-
-output "apim_sp_app_id" {
-  value = azuread_application.apim_app.application_id
-}
-
-output "apim_sp_client_secret" {
-  value     = azuread_service_principal_password.apim_sp_password.value
-  sensitive = true
 }

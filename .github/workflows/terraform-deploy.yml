@@ -1,4 +1,4 @@
-name: Deploy API Manager service and test the api
+name: Create SP, Deploy Terraform, and Cleanup
 
 on:
   push:
@@ -81,7 +81,7 @@ jobs:
     needs: terraform_plan
     runs-on: ubuntu-latest
     environment:
-      name: production  # Ensure a 'production' environment is created in GitHub with manual approval.
+      name: production  # Create a 'production' environment in GitHub with manual approval.
     env:
       ARM_CLIENT_ID: ${{ needs.create-sp.outputs.sp_appid }}
       ARM_CLIENT_SECRET: ${{ needs.create-sp.outputs.sp_password }}

@@ -21,7 +21,7 @@ variable "oidc_client_secret" {
 }
 
 variable "oidc_metadata_endpoint" {
-  description = "Metadata endpoint URL for the OIDC provider (e.g., https://login.microsoftonline.com/<tenant>/v2.0/.well-known/openid-configuration)"
+  description = "Metadata endpoint URL for the OIDC provider (e.g., https://login.microsoftonline.com/<TENANT_ID>/v2.0/.well-known/openid-configuration)"
   type        = string
 }
 
