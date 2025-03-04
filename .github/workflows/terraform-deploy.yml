@@ -3,7 +3,7 @@ name: Deploy API Manager service and test the api
 on:
   push:
     branches:
-      - master
+      - main
   workflow_dispatch:
 
 jobs:
