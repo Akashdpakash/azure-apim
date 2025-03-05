@@ -29,7 +29,12 @@ jobs:
           terraform_version: 1.4.6
 
       - name: Terraform Init
-        run: terraform init
+        run: |
+          cd terraform
+          terraform init -reconfigure -backend-config="resource_group_name=${{ secrets.RESOURCE_GROUP_NAME }}" \
+                         -backend-config="storage_account_name=${{ secrets.STORAGE_ACCOUNT_NAME }}" \
+                         -backend-config="container_name=${{ secrets.CONTAINER_NAME }}" \
+                         -backend-config="key=terraform.tfstate"
 
       - name: Terraform Plan
         run: |
@@ -40,17 +45,21 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: terraform-plan
-          path: tfplan
+          path: terraform/tfplan
 
   apply:
     needs: plan
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       - name: Download Terraform Plan
         uses: actions/download-artifact@v4
         with:
           name: terraform-plan
-          
+          path: terraform
+
       - name: Login to Azure using OIDC
         uses: azure/login@v1
         with: 
@@ -64,4 +73,6 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Terraform Apply
-        run: terraform apply tfplan
+        run: |
+          cd terraform
+          terraform apply tfplan
