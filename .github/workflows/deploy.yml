@@ -8,7 +8,6 @@ on:
 permissions:
   id-token: write
   contents: read
-  pull-requests: write  # Required for approval workflow
 
 jobs:
   plan:
@@ -30,10 +29,12 @@ jobs:
           terraform_version: 1.4.6
 
       - name: Terraform Init
-        run: terraform init -backend-config="resource_group_name=${{ secrets.RESOURCE_GROUP_NAME }}" \
-                            -backend-config="storage_account_name=${{ secrets.STORAGE_ACCOUNT_NAME }}" \
-                            -backend-config="container_name=${{ secrets.CONTAINER_NAME }}" \
-                            -backend-config="key=terraform.tfstate"
+        run: |
+          terraform init \
+            -backend-config="resource_group_name=${{ secrets.RESOURCE_GROUP_NAME }}" \
+            -backend-config="storage_account_name=${{ secrets.STORAGE_ACCOUNT_NAME }}" \
+            -backend-config="container_name=${{ secrets.CONTAINER_NAME }}" \
+            -backend-config="key=terraform.tfstate"
 
       - name: Terraform Plan
         run: terraform plan -var-file=terraform.tfvars -out=tfplan
@@ -47,7 +48,6 @@ jobs:
   apply:
     needs: plan
     runs-on: ubuntu-latest
-    environment: production  # This enables manual approval in GitHub
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -56,20 +56,18 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: terraform-plan
-          path: .
-
+          
       - name: Login to Azure using OIDC
         uses: azure/login@v1
         with: 
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}  
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Terraform Init  # Needed before apply
-        run: terraform init -backend-config="resource_group_name=${{ secrets.RESOURCE_GROUP_NAME }}" \
-                            -backend-config="storage_account_name=${{ secrets.STORAGE_ACCOUNT_NAME }}" \
-                            -backend-config="container_name=${{ secrets.CONTAINER_NAME }}" \
-                            -backend-config="key=terraform.tfstate"
+      - name: Require Approval
+        uses: hmarr/auto-approve-action@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve tfplan
+        run: terraform apply tfplan
