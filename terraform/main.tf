@@ -12,10 +12,10 @@ resource "azurerm_api_management_api" "hello_api" {
   name                = "hello-api"
   resource_group_name = var.resource_group_name
   api_management_name = module.apim.apim_id
-  revision           = "1"
-  display_name       = "Hello API"
-  path              = "hello"
-  protocols         = ["https"]
+  revision            = "1"
+  display_name        = "Hello API"
+  path                = "hello"
+  protocols           = ["https"]
 }
 
 resource "azurerm_api_management_api_operation" "hello_operation" {
@@ -24,8 +24,8 @@ resource "azurerm_api_management_api_operation" "hello_operation" {
   api_management_name = module.apim.apim_id
   resource_group_name = var.resource_group_name
   display_name        = "Say Hello"
-  method             = "GET"
-  url_template       = "/"
+  method              = "GET"
+  url_template        = "/"
   response {
     status_code = 200
     description = "Success"
