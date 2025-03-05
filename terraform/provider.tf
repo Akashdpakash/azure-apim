@@ -1,5 +1,7 @@
 provider "azurerm" {
   features {}
+  use_msi = false
+  skip_provider_registration = true
 
   subscription_id = var.subscription_id
   tenant_id       = var.tenant_id
