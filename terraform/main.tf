@@ -27,7 +27,7 @@ resource "azurerm_api_management_api_operation" "hello_operation" {
   method             = "GET"
   url_template       = "/"
   response {
-    status = 200
+    status_code = 200
     description = "Success"
     representation {
       content_type = "application/json"
