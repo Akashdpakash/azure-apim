@@ -43,6 +43,9 @@ jobs:
                          -backend-config="container_name=${{ secrets.CONTAINER_NAME }}" \
                          -backend-config="key=terraform.tfstate"
 
+      - name: Force Unlock Terraform State
+        run: terraform force-unlock fbcee73c-c921-8dcc-d23e-afc00e40c3ef
+                       
       - name: Terraform Plan
         run: |
           cd terraform
