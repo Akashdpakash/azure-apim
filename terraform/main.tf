@@ -1,8 +1,3 @@
-provider "azurerm" {
-  features {}
-  use_oidc = true   #  OIDC authentication is enabled
-}
-
 terraform {
   backend "azurerm" {}
 }
