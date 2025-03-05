@@ -32,7 +32,9 @@ jobs:
         run: terraform init
 
       - name: Terraform Plan
-        run: terraform plan -var-file=terraform.tfvars -out=tfplan
+        run: |
+          cd terraform
+          terraform plan -var-file=terraform.tfvars -out=tfplan
 
       - name: Upload Plan
         uses: actions/upload-artifact@v4
