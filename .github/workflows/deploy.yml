@@ -92,7 +92,7 @@ jobs:
           cd terraform
           terraform init -reconfigure
 
-      - name: Terraform Init
+      - name: Terraform Apply
         run: |
           cd terraform
           terraform apply -auto-approve tfplan       

@@ -4,8 +4,8 @@ resource "azurerm_api_management" "apim" {
   resource_group_name = var.resource_group_name
   publisher_name      = var.publisher_name
   publisher_email     = var.publisher_email
-  sku_name            = "Developer_1"
-  
+  sku_name            = "Basic"
+
 
  lifecycle {
     ignore_changes = [sku_name]
