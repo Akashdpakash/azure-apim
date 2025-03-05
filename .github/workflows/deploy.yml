@@ -16,6 +16,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Verify Terraform Files
+        run: ls -R  # 👈 This will list all files to confirm Terraform files exist
+
       - name: Login to Azure using OIDC
         uses: azure/login@v1
         with: 
