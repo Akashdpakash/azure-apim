@@ -87,7 +87,17 @@ jobs:
         with:
           terraform_version: 1.4.6  # Ensure Terraform is installed
 
-      - name: Terraform Apply
+      - name: Terraform Init
         run: |
           cd terraform
-          terraform apply -auto-approve tfplan
+          terraform init -reconfigure
+
+      - name: Terraform Init
+        run: |
+          cd terraform
+          terraform init -reconfigure
+
+      - name: Terraform Init
+        run: |
+          cd terraform
+          terraform apply -auto-approve tfplan       
