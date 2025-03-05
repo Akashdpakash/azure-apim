@@ -1,6 +1,3 @@
-terraform {
-  backend "azurerm" {}
-}
 
 module "apim" {
   source              = "../modules/apim"
