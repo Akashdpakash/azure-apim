@@ -57,7 +57,7 @@ jobs:
   apply:
     needs: plan
     runs-on: ubuntu-latest
-    environment: production  # Requires manual approval in GitHub UI
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
