@@ -1,0 +1,5 @@
+apim_name           = "my-apim-service"
+location            = "canadacentral"
+resource_group_name = "hcl"
+publisher_name      = "hcl"
+publisher_email     = "akashdpakash@gmail.com"

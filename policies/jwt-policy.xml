@@ -1,0 +1,18 @@
+<policies>
+    <inbound>
+        <base />
+        <validate-jwt header-name="Authorization" failed-validation-httpcode="401" failed-validation-error-message="Unauthorized">
+            <openid-config url="https://login.microsoftonline.com/{tenant_id}/v2.0/.well-known/openid-configuration" />
+            <required-claims>
+                <claim name="aud" match="exact">api://apim-hello-world</claim>
+            </required-claims>
+        </validate-jwt>
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <base />
+        <set-body>@"{\"message\": \"Hello, World!\"}"</set-body>
+    </outbound>
+</policies>
