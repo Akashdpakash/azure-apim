@@ -95,9 +95,4 @@ jobs:
       - name: Terraform Init
         run: |
           cd terraform
-          terraform init -reconfigure
-
-      - name: Terraform Init
-        run: |
-          cd terraform
           terraform apply -auto-approve tfplan       
