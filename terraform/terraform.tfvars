@@ -3,7 +3,7 @@ tenant_id       = "cf6c3ebc-d0b5-4bfc-9252-aca2d08f9194"
 
 resource_group_name = "hcl"
 apim_name           = "hello-apim-bayer"
-location            = "canadacentral"
+location            = "East US"
 publisher_name      = "Akash"
 publisher_email     = "Akashdpakash@gmail.com"
 
