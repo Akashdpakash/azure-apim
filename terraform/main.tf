@@ -11,7 +11,7 @@ module "apim" {
 resource "azurerm_api_management_api" "hello_api" {
   name                = "hello-api"
   resource_group_name = var.resource_group_name
-  api_management_name = module.apim.apim_id
+  api_management_name = module.apim.apim_name
   revision            = "1"
   display_name        = "Hello API"
   path                = "hello"
@@ -21,7 +21,7 @@ resource "azurerm_api_management_api" "hello_api" {
 resource "azurerm_api_management_api_operation" "hello_operation" {
   operation_id        = "sayHello"
   api_name            = azurerm_api_management_api.hello_api.name
-  api_management_name = module.apim.apim_id
+  api_management_name = module.apim.apim_name
   resource_group_name = var.resource_group_name
   display_name        = "Say Hello"
   method              = "GET"
